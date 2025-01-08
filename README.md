@@ -3,7 +3,7 @@
 # Étape 1
 -Cloner le repository github :
 
-git clone https://github.com/sSait0o/Click-Cook.git
+git clone https://github.com/jordyvuong/Click-and-Cook.git
 
 # Étape 2
 -Avoir php version 8.0 ou plus récente
