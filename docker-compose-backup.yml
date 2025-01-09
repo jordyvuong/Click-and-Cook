@@ -9,14 +9,17 @@ services:
       - ./public:/var/www/html/public
       - ./src:/var/www/html/src
       - ./templates:/var/www/html/templates
-      - ./migrations:/var/www/html/migrations
     depends_on:
-      - database
+      - db
     environment:
-      DATABASE_URL: "postgresql://jordy:bdd77@database:5432/click_and_cook"
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: click_and_cook
+      DB_USER: jordy
+      DB_PASSWORD: bdd77
 
   database:
-    image: postgres:16
+    image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -26,16 +29,16 @@ services:
       POSTGRES_PASSWORD: bdd77
 
   pgadmin:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-    ports:
-      - "8081:80" 
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin
-    depends_on:
-      - database
+      image: dpage/pgadmin4
+      environment:
+        PGADMIN_DEFAULT_EMAIL: admin@admin.com
+        PGADMIN_DEFAULT_PASSWORD: admin
+      ports:
+        - "8081:80" 
+      volumes:
+        - pgadmin_data:/var/lib/pgadmin
+      depends_on:
+        - db
 
 volumes:
   postgres_data:
