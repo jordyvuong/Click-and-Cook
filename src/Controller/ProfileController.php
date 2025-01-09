@@ -18,22 +18,27 @@ class ProfileController extends AbstractController
 {
     #[Route('/profile', name: 'profile')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function viewProfile(): Response
+    public function viewProfile(EntityManagerInterface $entityManager): Response
     {
         // Récupérer l'utilisateur connecté
         /** @var User $user */
         $user = $this->getUser();
 
+        // Récupérer les recettes de l'utilisateur
+        $recipes = $entityManager->getRepository('App\Entity\Recipe')->findBy(['user' => $user]);
+
         return $this->render('home/profil.html.twig', [
             'user' => $user,
+            'recipes' => $recipes,
+            
         ]);
     }
 
     #[Route('/profile/edit', name: 'profile_edit')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function editProfile(
-        Request $request, 
-        EntityManagerInterface $entityManager, 
+        Request $request,
+        EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher
     ): Response {
         // Récupérer l'utilisateur connecté
@@ -54,10 +59,10 @@ class ProfileController extends AbstractController
 
                 try {
                     $picture->move(
-                        $this->getParameter('profile_pictures_directory'), // Chemin configuré
+                        $this->getParameter('profile_pictures_directory'),
                         $newFilename
                     );
-                    $user->setPicture($newFilename); // Met à jour la propriété picture dans l'entité User
+                    $user->setPicture($newFilename);
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Erreur lors du téléchargement de la photo de profil.');
                 }

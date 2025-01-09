@@ -4,10 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Cuisine;
-use App\Entity\Ingredient;
-use App\Entity\Instruction;
 use App\Entity\Recipe;
+use App\Entity\Review;
 use App\Form\RecipeType;
+use App\Form\ReviewType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -20,59 +20,39 @@ class RecipeController extends AbstractController
     #[Route('/recipe/add', name: 'recipe_add')]
     public function addRecipe(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $recipe = new Recipe();
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $this->addFlash('info', 'Veuillez vous connecter pour ajouter une recette.');
+            return $this->redirectToRoute('app_login', [
+                'redirect_to' => $this->generateUrl('recipe_add'),
+            ]);
+        }
 
-        // Création du formulaire
+        $recipe = new Recipe();
+        $recipe->setUser($this->getUser());
+
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Gestion de la catégorie
-            $category = $form->get('category')->getData();
-            if ($category instanceof Category) {
-                $recipe->setCategory($category);
-            }
-
-            // Gestion de la cuisine
-            $cuisine = $form->get('cuisine')->getData();
-            if ($cuisine instanceof Cuisine) {
-                $recipe->setCuisine($cuisine);
-            }
-
-            // Gestion de l'upload de l'image
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
                 $newFilename = uniqid() . '.' . $imageFile->guessExtension();
-
                 try {
                     $imageFile->move(
-                        $this->getParameter('recipes_images_directory'), // Configurez ce paramètre dans services.yaml
+                        $this->getParameter('recipes_images_directory'),
                         $newFilename
                     );
                     $recipe->setImage($newFilename);
                 } catch (FileException $e) {
-                    $this->addFlash('error', 'An error occurred while uploading the image.');
+                    $this->addFlash('error', 'Erreur lors du téléchargement de l\'image.');
                 }
             }
 
-            // Lien entre les ingrédients et la recette
-            foreach ($recipe->getIngredients() as $ingredient) {
-                $ingredient->setRecipe($recipe);
-            }
-
-            // Lien entre les instructions et la recette
-            foreach ($recipe->getInstructions() as $instruction) {
-                $instruction->setRecipe($recipe);
-            }
-
-            // Enregistrement dans la base de données
             $entityManager->persist($recipe);
             $entityManager->flush();
 
-            // Message de succès
-            $this->addFlash('success', 'Recipe successfully added!');
-
-            return $this->redirectToRoute('recipe_list'); // Redirection vers la liste des recettes
+            $this->addFlash('success', 'Recette ajoutée avec succès !');
+            return $this->redirectToRoute('recipe_list');
         }
 
         return $this->render('recipe/add.html.twig', [
@@ -81,41 +61,122 @@ class RecipeController extends AbstractController
     }
 
     #[Route('/recipe', name: 'recipe_list')]
-    public function listRecipes(EntityManagerInterface $entityManager): Response
+    public function listRecipes(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Récupérer toutes les recettes
-        $recipes = $entityManager->getRepository(Recipe::class)->findAll();
+        $cuisines = $entityManager->getRepository(Cuisine::class)->findAll();
+        $categories = $entityManager->getRepository(Category::class)->findAll();
+
+        $cuisineId = $request->query->get('cuisine');
+        $categoryId = $request->query->get('category');
+        $criteria = [];
+        if ($cuisineId) {
+            $criteria['cuisine'] = $cuisineId;
+        }
+        if ($categoryId) {
+            $criteria['category'] = $categoryId;
+        }
+
+        $recipes = $entityManager->getRepository(Recipe::class)->findBy($criteria);
 
         return $this->render('recipe/list.html.twig', [
             'recipes' => $recipes,
+            'cuisines' => $cuisines,
+            'categories' => $categories,
         ]);
     }
 
-    #[Route('/recipe/{id}', name: 'recipe_view', requirements: ['id' => '\d+'])]
-    public function viewRecipe(int $id, EntityManagerInterface $entityManager): Response
+    #[Route('/recipe/edit/{id}', name: 'recipe_edit', requirements: ['id' => '\\d+'])]
+    public function editRecipe(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Récupérer une recette par son ID
         $recipe = $entityManager->getRepository(Recipe::class)->find($id);
 
         if (!$recipe) {
-            throw $this->createNotFoundException('Recipe not found.');
+            throw $this->createNotFoundException('Recette non trouvée.');
+        }
+
+        if ($recipe->getUser() !== $this->getUser()) {
+            $this->addFlash('error', 'Vous n\'êtes pas autorisé à modifier cette recette.');
+            return $this->redirectToRoute('recipe_list');
+        }
+
+        $form = $this->createForm(RecipeType::class, $recipe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form->get('image')->getData();
+            if ($imageFile) {
+                $newFilename = uniqid() . '.' . $imageFile->guessExtension();
+                try {
+                    $imageFile->move(
+                        $this->getParameter('recipes_images_directory'),
+                        $newFilename
+                    );
+                    $recipe->setImage($newFilename);
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Erreur lors du téléchargement de l\'image.');
+                }
+            }
+
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Recette modifiée avec succès !');
+            return $this->redirectToRoute('recipe_view', ['id' => $recipe->getId()]);
+        }
+
+        return $this->render('recipe/edit.html.twig', [
+            'form' => $form->createView(),
+            'recipe' => $recipe,
+        ]);
+    }
+
+    #[Route('/recipe/{id}', name: 'recipe_view', requirements: ['id' => '\\d+'])]
+    public function viewRecipe(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $recipe = $entityManager->getRepository(Recipe::class)->find($id);
+
+        if (!$recipe) {
+            throw $this->createNotFoundException('Recette non trouvée.');
+        }
+
+        $review = new Review();
+        $form = $this->createForm(ReviewType::class, $review);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $review->setUser($this->getUser());
+            $review->setRecipe($recipe);
+
+            $entityManager->persist($review);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Avis ajouté avec succès !');
+            return $this->redirectToRoute('recipe_view', ['id' => $id]);
         }
 
         return $this->render('recipe/detail.html.twig', [
             'recipe' => $recipe,
+            'reviewForm' => $form->createView(),
         ]);
     }
-    #[Route('/recipe/{id}', name: 'recipe_detail', requirements: ['id' => '\d+'])]
-    public function recipeDetail(int $id, EntityManagerInterface $entityManager): Response
+
+    #[Route('/recipe/delete/{id}', name: 'recipe_delete', methods: ['POST'], requirements: ['id' => '\\d+'])]
+    public function deleteRecipe(int $id, EntityManagerInterface $entityManager): Response
     {
         $recipe = $entityManager->getRepository(Recipe::class)->find($id);
-    
+
         if (!$recipe) {
-            throw $this->createNotFoundException('Recipe not found.');
+            throw $this->createNotFoundException('Recette non trouvée.');
         }
-    
-        return $this->render('recipe/detail.html.twig', [
-            'recipe' => $recipe,
-        ]);
+
+        if ($recipe->getUser() !== $this->getUser()) {
+            $this->addFlash('error', 'Vous n\'êtes pas autorisé à supprimer cette recette.');
+            return $this->redirectToRoute('recipe_list');
+        }
+
+        $entityManager->remove($recipe);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Recette supprimée avec succès !');
+        return $this->redirectToRoute('recipe_list');
     }
 }

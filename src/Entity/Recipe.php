@@ -54,10 +54,21 @@ class Recipe
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'recipes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'recipe')]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
         $this->instructions = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,6 +226,48 @@ class Recipe
     public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(Review $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(Review $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getRecipe() === $this) {
+                $review->setRecipe(null);
+            }
+        }
 
         return $this;
     }

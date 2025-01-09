@@ -14,11 +14,11 @@ class IngredientType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Ingredient Name',
+                'label' => 'Nom de l\'ingrédient',
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('quantity', TextType::class, [
-                'label' => 'Quantity',
+                'label' => 'Quantité',
                 'attr' => ['class' => 'form-control'],
             ]);
     }

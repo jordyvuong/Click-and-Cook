@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -39,6 +41,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
+
+    /**
+     * @var Collection<int, Recipe>
+     */
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Recipe::class, cascade: ['persist', 'remove'])]
+    private Collection $recipes;
+
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -135,6 +148,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPicture(?string $picture): static
     {
         $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): static
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): static
+    {
+        if ($this->recipes->removeElement($recipe)) {
+            if ($recipe->getUser() === $this) {
+                $recipe->setUser(null);
+            }
+        }
 
         return $this;
     }

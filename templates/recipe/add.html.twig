@@ -1,66 +1,199 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add a Recipe{% endblock %}
+
+{% block title %}Créer une nouvelle recette{% endblock %}
 
 {% block body %}
-<section class="container py-5">
-    <h1 class="text-center mb-4">Add a Recipe</h1>
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            {{ form_start(form, { 'attr': { 'enctype': 'multipart/form-data' } }) }}
-                <div class="mb-3">
-                    {{ form_label(form.title) }}
-                    {{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}
-                </div>
-                <div class="mb-3">
-                    {{ form_label(form.image) }}
-                    {{ form_widget(form.image, { 'attr': {'class': 'form-control'} }) }}
-                </div>
-                <div class="mb-3">
-                    {{ form_label(form.description) }}
-                    {{ form_widget(form.description, { 'attr': {'class': 'form-control'} }) }}
-                </div>
+<header class="bg-white shadow-sm py-3 mb-4 fixed-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light p-0 ">
+            <h1 class="h4 navbar-brand mb-0">Click-and-Cook</h1>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <h4>Ingredients</h4>
-                <div id="ingredients-wrapper" data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}">
-                    {{ form_widget(form.ingredients) }}
-                </div>
-                <button type="button" class="btn btn-secondary mt-2" id="add-ingredient">+ Add Ingredient</button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link text-dark">Accueil</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link text-dark">Recettes</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link text-dark">Blog</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link text-dark">A propos</a></li>
+                </ul>
+                <div class="d-flex flex-column flex-lg-row gap-2">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="#" class="btn btn-outline-secondary">Ajouter une recette</a>
+                    <a href="{{ path('app_profil')}}" class="btn btn-custom">Profil</a>
+                    
+                    {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Se connecter</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-custom">S'inscrire</a>
+                    {% endif %}
 
-                <h4>Instructions</h4>
-                <div id="instructions-wrapper" data-prototype="{{ form_widget(form.instructions.vars.prototype)|e('html_attr') }}">
-                    {{ form_widget(form.instructions) }}
                 </div>
-                <button type="button" class="btn btn-secondary mt-2" id="add-instruction">+ Add Instruction</button>
-
-                <div class="mb-3">
-                    {{ form_label(form.cuisine) }}
-                    {{ form_widget(form.cuisine, { 'attr': {'class': 'form-control'} }) }}
-                </div>
-                <div class="mb-3">
-                    {{ form_label(form.category) }}
-                    {{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}
-                </div>
-                <button class="btn btn-primary mt-3">Save Recipe</button>
-            {{ form_end(form) }}
-        </div>
+            </div>
+        </nav>
     </div>
-</section>
+</header>
+<div class="container py-5 mt-5">
+    <h1 class="recipe-form-title">Créer une nouvelle recette</h1>
+
+    {{ form_start(form, { 'attr': { 'enctype': 'multipart/form-data' } }) }}
+        <div class="mb-4">
+            {{ form_label(form.title, 'Nom de la recette:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Ajouter le nom de la recette'} }) }}
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Image de la recette:</label>
+            <div class="image-upload-container">
+                <div id="image-preview-container" style="display: none; max-width: 400px; margin: 0 auto; text-align: center;">
+                    <img id="image-preview" class="image-preview" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin: 1rem auto; display: block;">
+                </div>
+                {{ form_widget(form.image, { 
+                    'attr': {
+                        'class': 'form-control d-none',
+                        'accept': 'image/*',
+                        'onchange': 'handleImagePreview(this)'
+                    }
+                }) }}
+                <button type="button" class="add-photo-btn" onclick="document.getElementById('{{ form.image.vars.id }}').click()">
+                    Ajouter une photo
+                </button>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(form.description, 'Description:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, { 
+                'attr': {
+                    'class': 'form-control',
+                    'placeholder': 'Parlez-nous de votre recette',
+                    'rows': '4'
+                }
+            }) }}
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Ingredients:</label>
+            <div id="ingredients-wrapper" 
+                 data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}"
+                 class="mb-3">
+                {% for ingredientField in form.ingredients %}
+                    <div class="mb-2">
+                        {{ form_widget(ingredientField, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-outline-secondary" id="add-ingredient">Ajouter un ingredient</button>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Instructions:</label>
+            <div id="instructions-wrapper" 
+                 data-prototype="{{ form_widget(form.instructions.vars.prototype)|e('html_attr') }}">
+                {% for instructionField in form.instructions %}
+                    <div class="instruction-step">
+                        <div class="step-number">Step {{ loop.index }}</div>
+                        {{ form_widget(instructionField, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" class="btn btn-outline-secondary" id="add-instruction">Ajouter une instruction</button>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                {{ form_label(form.servings, 'Portions:', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.servings, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.cookingTime, 'Temps de cuisson:', {'label_attr': {'class': 'form-label'}}) }}
+                <div class="input-group">
+                    {{ form_widget(form.cookingTime, { 
+                        'attr': {
+                            'class': 'form-control',
+                            'placeholder': 'Minutes'
+                        }
+                    }) }}
+                    <span class="input-group-text">Minutes</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.prepTime, 'Temps de préparation:', {'label_attr': {'class': 'form-label'}}) }}
+                <div class="input-group">
+                    {{ form_widget(form.prepTime, { 
+                        'attr': {
+                            'class': 'form-control',
+                            'placeholder': 'Minutes'
+                        }
+                    }) }}
+                    <span class="input-group-text">Minutes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                {{ form_label(form.cuisine, 'Cuisine:', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.cuisine, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.category, 'Collection:', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+        </div>
+
+        <button class="save-btn">Sauvegarder</button>
+    {{ form_end(form) }}
+</div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const ingredientsWrapper = document.getElementById('ingredients-wrapper');
-        const instructionsWrapper = document.getElementById('instructions-wrapper');
+document.addEventListener('DOMContentLoaded', function () {
+    const ingredientsWrapper = document.getElementById('ingredients-wrapper');
+    const instructionsWrapper = document.getElementById('instructions-wrapper');
 
-        function addField(wrapper) {
-            const prototype = wrapper.dataset.prototype;
-            const index = wrapper.children.length;
-            const newField = prototype.replace(/__name__/g, index);
-            wrapper.insertAdjacentHTML('beforeend', newField);
+    function addIngredient() {
+        const prototype = ingredientsWrapper.dataset.prototype;
+        const index = ingredientsWrapper.children.length;
+        const newField = prototype.replace(/__name__/g, index);
+        const div = document.createElement('div');
+        div.className = 'mb-2';
+        div.innerHTML = newField;
+        ingredientsWrapper.appendChild(div);
+    }
+
+    function addInstruction() {
+        const prototype = instructionsWrapper.dataset.prototype;
+        const index = instructionsWrapper.children.length;
+        const newField = prototype.replace(/__name__/g, index);
+        const div = document.createElement('div');
+        div.className = 'instruction-step';
+        div.innerHTML = `
+            <div class="step-number">Étape ${index + 1}</div>
+            ${newField}
+        `;
+        instructionsWrapper.appendChild(div);
+    }
+
+    document.getElementById('add-ingredient').addEventListener('click', addIngredient);
+    document.getElementById('add-instruction').addEventListener('click', addInstruction);
+});
+
+function handleImagePreview(input) {
+    const previewContainer = document.getElementById('image-preview-container');
+    const preview = document.getElementById('image-preview');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            previewContainer.style.display = 'block';
         }
-
-        document.getElementById('add-ingredient').addEventListener('click', () => addField(ingredientsWrapper));
-        document.getElementById('add-instruction').addEventListener('click', () => addField(instructionsWrapper));
-    });
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
 </script>
 {% endblock %}

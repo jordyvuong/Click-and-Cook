@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la recette - {{ recipe.title }}{% endblock %}
+
+{% block body %}
+<div class="container py-5 mt-5">
+    <h1 class="text-center">Modifier la recette</h1>
+
+    {{ form_start(form, { 'attr': { 'enctype': 'multipart/form-data' } }) }}
+        <div class="mb-4">
+            {{ form_label(form.title, 'Nom de la recette:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Modifier le nom de la recette'} }) }}
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Image actuelle:</label>
+            {% if recipe.image %}
+                <img src="{{ asset('uploads/recipes/' ~ recipe.image) }}" alt="{{ recipe.title }}" class="img-fluid rounded mb-3">
+            {% endif %}
+            {{ form_widget(form.image, { 'attr': {'class': 'form-control', 'accept': 'image/*'} }) }}
+        </div>
+
+        <div class="mb-4">
+            {{ form_label(form.description, 'Description:', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, { 'attr': {'class': 'form-control', 'rows': '4'} }) }}
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Ingredients:</label>
+            <div id="ingredients-wrapper">
+                {% for ingredientField in form.ingredients %}
+                    <div class="mb-2">
+                        {{ form_widget(ingredientField, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label">Instructions:</label>
+            <div id="instructions-wrapper">
+                {% for instructionField in form.instructions %}
+                    <div class="mb-2">
+                        {{ form_widget(instructionField, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                {{ form_label(form.servings, 'Portions:', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.servings, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.cookingTime, 'Temps de cuisson:', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.cookingTime, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.prepTime, 'Temps de préparation:', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.prepTime, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+        </div>
+
+        <button type="submit" class="save-btn">Mettre à jour</button>
+    {{ form_end(form) }}
+
+    <form method="post" action="{{ path('recipe_delete', {id: recipe.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recipe.id) }}">
+        <button class="btn btn-danger mt-3">Supprimer la recette</button>
+    </form>
+</div>
+{% endblock %}

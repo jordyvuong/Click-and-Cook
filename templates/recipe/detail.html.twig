@@ -1,115 +1,72 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="assets/styles/styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        .recipe-meta {
-            display: flex;
-            gap: 2rem;
-            margin: 2rem 0;
-            padding: 1rem 0;
-            border-bottom: 1px solid #eee;
-        }
-        .recipe-meta-item {
-            text-align: center;
-        }
-        .recipe-meta-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        .recipe-meta-value {
-            font-weight: bold;
-            margin-top: 0.5rem;
-        }
-        .ingredients-list {
-            list-style: none;
-            padding: 0;
-        }
-        .ingredients-list li {
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .ingredients-list input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-        }
-        .instructions-list {
-            padding-left: 2rem;
-        }
-        .instructions-list li {
-            margin-bottom: 1.5rem;
-        }
-        .recipe-actions {
-            display: flex;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        .btn-print {
-            background-color: #dc6b4a;
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 5px;
-        }
-        .breadcrumb {
-            margin-bottom: 2rem;
-        }
-        .category-cuisine {
-            display: flex;
-            gap: 1rem;
-            color: #666;
-            font-size: 0.9rem;
-        }
-    </style>
-{% endblock %}
+
 
 {% block title %}{{ recipe.title }}{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ path('recipe_list') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ path('recipe_list') }}">Recipe</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ recipe.title }}</li>
-        </ol>
-    </nav>
+<header class="bg-white shadow-sm py-3 mb-4 fixed-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light p-0">
+            <h1 class="h4 navbar-brand mb-0">Click-and-Cook</h1>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link text-dark">Accueil</a></li>
+                    <li class="nav-item"><a href="{{ path('recipe_list') }}" class="nav-link text-dark">Recettes</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link text-dark">Blog</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link text-dark">À propos</a></li>
+                </ul>
+                <div class="d-flex flex-column flex-lg-row gap-2">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('recipe_add') }}" class="btn btn-outline-secondary">Ajouter une recette</a>
+                    <a href="{{ path('app_profil') }}" class="btn btn-custom">Profil</a>
+                    {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Se connecter</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-custom">S'inscrire</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<div class="container mt-5 p-5">
 
     <!-- Recipe Title -->
     <h1 class="mb-3">{{ recipe.title }}</h1>
 
     <!-- Category and Cuisine -->
     <div class="category-cuisine mb-4">
-        <span>Category: {{ recipe.category.name }}</span>
+        <span>Categorie: {{ recipe.category.name }}</span>
         <span>•</span>
         <span>Cuisine: {{ recipe.cuisine.name }}</span>
     </div>
 
-    <!-- Recipe Image -->
-    <div class="mb-4">
-        {% if recipe.image %}
-            <img src="{{ asset('uploads/recipes/' ~ recipe.image) }}" alt="{{ recipe.title }}" class="img-fluid rounded">
-        {% else %}
-            <img src="https://via.placeholder.com/800x400" alt="Placeholder image" class="img-fluid rounded">
-        {% endif %}
-    </div>
+<!-- Recipe Image -->
+<div class="mb-4 text-center">
+    {% if recipe.image %}
+        <img src="{{ asset('uploads/recipes/' ~ recipe.image) }}" alt="{{ recipe.title }}" class="img-fluid rounded w-50 mx-auto d-block">
+    {% else %}
+        <img src="https://via.placeholder.com/800x400" alt="Placeholder image" class="img-fluid rounded w-50 mx-auto d-block">
+    {% endif %}
+</div>
+
 
     <!-- Recipe Meta Info -->
     <div class="recipe-meta">
         <div class="recipe-meta-item">
-            <div class="recipe-meta-label">Prep time</div>
-            <div class="recipe-meta-value">{{ recipe.prepTime }} mins</div>
+            <div class="recipe-meta-label">Temps de préparation</div>
+            <div class="recipe-meta-value">{{ recipe.prepTime }} minutes</div>
         </div>
         <div class="recipe-meta-item">
-            <div class="recipe-meta-label">Cook time</div>
-            <div class="recipe-meta-value">{{ recipe.cookingTime }} mins</div>
+            <div class="recipe-meta-label">Temps de cuisson</div>
+            <div class="recipe-meta-value">{{ recipe.cookingTime }} minutes</div>
         </div>
         <div class="recipe-meta-item">
-            <div class="recipe-meta-label">Servings</div>
+            <div class="recipe-meta-label">Portions</div>
             <div class="recipe-meta-value">{{ recipe.servings }}</div>
         </div>
     </div>
@@ -119,30 +76,102 @@
 
     <!-- Recipe Actions -->
     <div class="recipe-actions">
-        <button class="btn-print">Print Recipe</button>
+        <button class="btn-print">Imprimer la recette</button>
+        {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == recipe.user %}
+        <a href="{{ path('recipe_edit', { id: recipe.id }) }}" class="btn btn-outline-primary">Modifier la recette</a>
+        <form action="{{ path('recipe_delete', { id: recipe.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recipe.id) }}">
+        <button type="submit" class="btn btn-outline-danger">Supprimer la recette</button>
+
+        </form>
+        {% endif %}
+    </div>
     </div>
 
-    <!-- Ingredients Section -->
-    <h3 class="mb-4">Ingredients:</h3>
-    <ul class="ingredients-list">
-        {% for ingredient in recipe.ingredients %}
-            <li>
-                <input type="checkbox" id="ingredient-{{ loop.index }}">
-                <label for="ingredient-{{ loop.index }}">{{ ingredient.quantity }} {{ ingredient.name }}</label>
-            </li>
-        {% else %}
-            <li>No ingredients added.</li>
-        {% endfor %}
-    </ul>
-
-    <!-- Instructions Section -->
-    <h3 class="mb-4">Instructions:</h3>
-    <ol class="instructions-list">
-        {% for instruction in recipe.instructions %}
-            <li>{{ instruction.content }}</li>
-        {% else %}
-            <li>No instructions added.</li>
-        {% endfor %}
-    </ol>
+<!-- Ingredients Section -->
+<div class="container mt-5">
+    <h3 class="mb-4">Ingrédients</h3>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <ul class="list-group">
+                {% for ingredient in recipe.ingredients %}
+                    <li class="list-group-item d-flex align-items-center">
+                        <input type="checkbox" id="ingredient-{{ loop.index }}" class="form-check-input me-2">
+                        <label for="ingredient-{{ loop.index }}" class="mb-0">
+                            <strong>{{ ingredient.quantity }}</strong> {{ ingredient.name }}
+                        </label>
+                    </li>
+                {% else %}
+                    <li class="list-group-item text-muted">Aucun ingrédient ajouté.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
+
+<!-- Instructions Section -->
+<div class="container mt-5">
+    <h3 class="mb-4">Instructions</h3>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <ol class="list-group list-group-numbered">
+                {% for instruction in recipe.instructions %}
+                    <li class="list-group-item">{{ instruction.content }}</li>
+                {% else %}
+                    <li class="list-group-item text-muted">Aucune instruction fournie.</li>
+                {% endfor %}
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <!-- Section des avis -->
+    <h3 class="mt-4">Avis :</h3>
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            {% if recipe.reviews|length > 0 %}
+                <ul class="list-group">
+                    {% for review in recipe.reviews %}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <span><strong>{{ review.user.username }}</strong></span>
+                                <span class="badge bg-primary">{{ review.rating }}/5</span>
+                            </div>
+                            <p class="mt-2 mb-0 text-muted">{{ review.comment }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Pas encore d'avis pour cette recette.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Formulaire pour laisser un avis -->
+    <h3 class="mb-4">Laisser un avis :</h3>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {{ form_start(reviewForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+                <div class="mb-4">
+                    {{ form_label(reviewForm.comment, 'Commentaire :', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(reviewForm.comment, {'attr': {'class': 'form-control', 'rows': 4, 'placeholder': 'Partagez votre expérience...'}}) }}
+                    {{ form_errors(reviewForm.comment) }}
+                </div>
+                <div class="mb-4">
+                    {{ form_label(reviewForm.rating, 'Note (1-5) :', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(reviewForm.rating, {'attr': {'class': 'form-control', 'type': 'number', 'min': 1, 'max': 5}}) }}
+                    {{ form_errors(reviewForm.rating) }}
+                </div>
+                <!-- Ajout du champ CSRF token -->
+                {{ form_row(reviewForm._token) }}
+                <div class="d-grid">
+                    <button class="btn btn-custom btn-lg" type="submit">Envoyer l'avis</button>
+                </div>
+            {{ form_end(reviewForm) }}
+        </div>
+    </div>
+</div>
+
 {% endblock %}
+
