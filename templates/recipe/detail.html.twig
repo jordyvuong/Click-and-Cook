@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="assets/styles/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .recipe-meta {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .recipe-meta-item {
+            text-align: center;
+        }
+        .recipe-meta-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .recipe-meta-value {
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+        .ingredients-list {
+            list-style: none;
+            padding: 0;
+        }
+        .ingredients-list li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .ingredients-list input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+        .instructions-list {
+            padding-left: 2rem;
+        }
+        .instructions-list li {
+            margin-bottom: 1.5rem;
+        }
+        .recipe-actions {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .btn-print {
+            background-color: #dc6b4a;
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+        }
+        .breadcrumb {
+            margin-bottom: 2rem;
+        }
+        .category-cuisine {
+            display: flex;
+            gap: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+    </style>
+{% endblock %}
+
+{% block title %}{{ recipe.title }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('recipe_list') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('recipe_list') }}">Recipe</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ recipe.title }}</li>
+        </ol>
+    </nav>
+
+    <!-- Recipe Title -->
+    <h1 class="mb-3">{{ recipe.title }}</h1>
+
+    <!-- Category and Cuisine -->
+    <div class="category-cuisine mb-4">
+        <span>Category: {{ recipe.category.name }}</span>
+        <span>•</span>
+        <span>Cuisine: {{ recipe.cuisine.name }}</span>
+    </div>
+
+    <!-- Recipe Image -->
+    <div class="mb-4">
+        {% if recipe.image %}
+            <img src="{{ asset('uploads/recipes/' ~ recipe.image) }}" alt="{{ recipe.title }}" class="img-fluid rounded">
+        {% else %}
+            <img src="https://via.placeholder.com/800x400" alt="Placeholder image" class="img-fluid rounded">
+        {% endif %}
+    </div>
+
+    <!-- Recipe Meta Info -->
+    <div class="recipe-meta">
+        <div class="recipe-meta-item">
+            <div class="recipe-meta-label">Prep time</div>
+            <div class="recipe-meta-value">{{ recipe.prepTime }} mins</div>
+        </div>
+        <div class="recipe-meta-item">
+            <div class="recipe-meta-label">Cook time</div>
+            <div class="recipe-meta-value">{{ recipe.cookingTime }} mins</div>
+        </div>
+        <div class="recipe-meta-item">
+            <div class="recipe-meta-label">Servings</div>
+            <div class="recipe-meta-value">{{ recipe.servings }}</div>
+        </div>
+    </div>
+
+    <!-- Recipe Description -->
+    <p class="mb-4">{{ recipe.description }}</p>
+
+    <!-- Recipe Actions -->
+    <div class="recipe-actions">
+        <button class="btn-print">Print Recipe</button>
+    </div>
+
+    <!-- Ingredients Section -->
+    <h3 class="mb-4">Ingredients:</h3>
+    <ul class="ingredients-list">
+        {% for ingredient in recipe.ingredients %}
+            <li>
+                <input type="checkbox" id="ingredient-{{ loop.index }}">
+                <label for="ingredient-{{ loop.index }}">{{ ingredient.quantity }} {{ ingredient.name }}</label>
+            </li>
+        {% else %}
+            <li>No ingredients added.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Instructions Section -->
+    <h3 class="mb-4">Instructions:</h3>
+    <ol class="instructions-list">
+        {% for instruction in recipe.instructions %}
+            <li>{{ instruction.content }}</li>
+        {% else %}
+            <li>No instructions added.</li>
+        {% endfor %}
+    </ol>
+</div>
+{% endblock %}

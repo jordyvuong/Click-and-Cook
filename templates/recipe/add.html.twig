@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add a Recipe{% endblock %}
+
+{% block body %}
+<section class="container py-5">
+    <h1 class="text-center mb-4">Add a Recipe</h1>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            {{ form_start(form, { 'attr': { 'enctype': 'multipart/form-data' } }) }}
+                <div class="mb-3">
+                    {{ form_label(form.title) }}
+                    {{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.image) }}
+                    {{ form_widget(form.image, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.description) }}
+                    {{ form_widget(form.description, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+
+                <h4>Ingredients</h4>
+                <div id="ingredients-wrapper" data-prototype="{{ form_widget(form.ingredients.vars.prototype)|e('html_attr') }}">
+                    {{ form_widget(form.ingredients) }}
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" id="add-ingredient">+ Add Ingredient</button>
+
+                <h4>Instructions</h4>
+                <div id="instructions-wrapper" data-prototype="{{ form_widget(form.instructions.vars.prototype)|e('html_attr') }}">
+                    {{ form_widget(form.instructions) }}
+                </div>
+                <button type="button" class="btn btn-secondary mt-2" id="add-instruction">+ Add Instruction</button>
+
+                <div class="mb-3">
+                    {{ form_label(form.cuisine) }}
+                    {{ form_widget(form.cuisine, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_label(form.category) }}
+                    {{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+                <button class="btn btn-primary mt-3">Save Recipe</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ingredientsWrapper = document.getElementById('ingredients-wrapper');
+        const instructionsWrapper = document.getElementById('instructions-wrapper');
+
+        function addField(wrapper) {
+            const prototype = wrapper.dataset.prototype;
+            const index = wrapper.children.length;
+            const newField = prototype.replace(/__name__/g, index);
+            wrapper.insertAdjacentHTML('beforeend', newField);
+        }
+
+        document.getElementById('add-ingredient').addEventListener('click', () => addField(ingredientsWrapper));
+        document.getElementById('add-instruction').addEventListener('click', () => addField(instructionsWrapper));
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recettes{% endblock %}
+
+{% block body %}
+<section class="container py-5">
+    <h1 class="text-center mb-4">Recettes</h1>
+    <div class="row">
+        {% for recipe in recipes %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img 
+                        src="{{ asset('uploads/recipes/' ~ recipe.image) }}" 
+                        class="card-img-top" 
+                        alt="{{ recipe.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <p class="card-text">
+                            {{ recipe.description|slice(0, 100) ~ '...' }}
+                        </p>
+                        <a href="{{ path('recipe_detail', { id: recipe.id }) }}" class="btn btn-primary">Voir plus</a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <p class="text-center">Aucune recette disponible pour le moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
