@@ -24,9 +24,9 @@ composer install
 # Étape 3
 -Se connecter à la base de données
 
--Aller dans .. > .. >
+-Aller dans .env
 
--Et changer .. (Ligne ..) avec votre propre base de données
+-Et changer la connexion à la bdd d'un autre (Ligne 29) avec votre propre base de données
 
 -Exemple :
 
