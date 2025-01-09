@@ -65,7 +65,16 @@
                         <a href="{{ path('app_logout') }}" class="btn btn-danger">Se déconnecter</a>
                     </div>
                 </div>
+            
             </div>
+               <div x-data="{ showMessage: false }">
+    <!-- Bouton -->
+    <button @click="showMessage = true" class="btn btn-primary">Voir vos recettes</button>
+    <!-- Message -->
+    <p x-show="showMessage" x-transition class="mt-3 alert alert-info">
+        Vous n'avez pas créé de recette. <a href="/">Créez en une.</a> 
+    </p>
+</div>
         </div>
     </div>
 </section>

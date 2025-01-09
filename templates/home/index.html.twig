@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-<header class="bg-white shadow-sm py-3 mb-4">
+<header class="bg-white shadow-sm py-3 mb-4 fixed-top">
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light p-0">
+        <nav class="navbar navbar-expand-lg navbar-light p-0 ">
             <h1 class="h4 navbar-brand mb-0">Click-and-Cook</h1>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
             </button>
 
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
                     <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link text-dark">Accueil</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-dark">Recettes</a></li>
                     <li class="nav-item"><a href="#" class="nav-link text-dark">Blog</a></li>
@@ -70,7 +70,7 @@
             <a href="#" class="btn btn-custom">Create New Recipe</a>
         </div>
 <section class="py-5">
-    <div class="container hotrecipe">
+    <div class="container hotrecipe travelAnim One">
         <h3 class="mb-4">Recettes du moment</h3>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             <!-- Première carte -->
@@ -130,7 +130,7 @@
         <!-- Blog Cards -->
         <div class="row mt-4">
             <!-- First Card -->
-            <div class="col-md-6">
+            <div class="col-md-6 leftAnim">
                 <div class="card shadow-sm">
                     <img src="assets/img/luncbox.jpg" class="card-img-top" alt="Intermittent Fasting">
                     <div class="card-body">
@@ -142,7 +142,7 @@
                 </div>
             </div>
             <!-- Second Card -->
-            <div class="col-md-6">
+            <div class="col-md-6 rightAnim">
                 <div class="card shadow-sm">
                     <img src="assets/img/airfrier.webp" class="card-img-top" alt="Sugar Consumption">
                     <div class="card-body">
@@ -156,7 +156,7 @@
         </div>
     </div>
     </section>
-    <section class="text-center py-5 ">
+    <section class="travelAnim Two text-center py-5"> 
     <h2 class="mb-4">Voyagez</h2>
     <div class="row row-cols-1 row-cols-md-5 g-3 justify-content-center">
      <div class="col" x-data="{}">
@@ -202,7 +202,7 @@
                 </div>
             </div>
              <div class="col" x-data="{}">
-                <div class="card h-100">
+                <div class="card h-100 travelAnim">
                     <img src="https://via.placeholder.com/150" class="card-img-top" alt="Onion Rings">
                     <div class="card-body">
                         <h5 class="card-title">Cuisine indienne</h5>
@@ -217,12 +217,11 @@
             </div>
     </div>
 
-    <div class="test">
-    <h1>test</h1>
-    </div>
+
     
     </section>
-<section
+
+<section>
 
     <footer class="bg-light py-4 text-center">
         <div class="container">
@@ -230,9 +229,11 @@
         </div>
     </footer>
      
+</section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="assets/js/script.js"></script>
+  <script src="{{ asset('assets/javascript/script.js') }}"></script>
+
 </body>
 </html>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
