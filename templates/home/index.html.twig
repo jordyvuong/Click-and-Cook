@@ -32,7 +32,7 @@
                     
                     {% else %}
                     <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Se connecter</a>
-                    <a href="#" class="btn btn-custom">S'inscrire</a>
+                    <a href="register" class="btn btn-custom">S'inscrire</a>
                     {% endif %}
 
                 </div>
@@ -49,8 +49,8 @@
                     <h2 class="display-4">Votre plat du jour<br> <span class="text-danger">Un voyage culinaire</span></h2>
                     <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vitae enim pharetra, venenatis nunc eget, finibus est. Proin velit.</p>
                 {% if not app.user %}
-                    <a href="#" class="btn btn-custom btn-lg">S'inscrire</a>
-                    <p class="mt-3">Vous avez déjà un compte ? <a href="#" class="text-danger">Se connecter</a></p>
+                    <a href="register" class="btn btn-custom btn-lg">S'inscrire</a>
+                    <p class="mt-3">Vous avez déjà un compte ? <a href="{{ path('app_login') }}" class="text-danger">Se connecter</a></p>
                 {% endif %}
                 </div>
                 <!-- Colonne de droite pour l'image -->
