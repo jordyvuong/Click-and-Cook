@@ -1,19 +1,19 @@
-Application Click and Cook
+## Application Click and Cook
 Une application de recette de cuisine construite avec PHP et PostgreSQL.
 
-🚀 Fonctionnalités
+## 🚀 Fonctionnalités
 Voir des recettes de cuisine
 Consulter les blogs 
 Se connecter 
 
-🛠 Prérequis
+## 🛠 Prérequis
 Docker
 Symfony 
 Docker Compose
 Git
 Navigateur web pour pgAdmin
 
-📦 Installation
+## 📦 Installation
 Clonez le repository :
 git clone [url-du-repo]
 cd [nom-du-dossier]
@@ -22,10 +22,10 @@ docker compose up --build
 Installer Composer 
 Composer Install
 
-🌐 Utilisation
+## 🌐 Utilisation
 Accédez à l'application via votre navigateur : http://localhost:8080
 
-📊 Accès à pgAdmin ou phpmyadmin
+## 📊 Accès à pgAdmin ou phpmyadmin
 pgAdmin est accessible via votre navigateur : http://localhost:8081
 
 pour phpmyadmin: -Aller dans .env
@@ -40,7 +40,7 @@ Puis créer la bdd avec :
 
 php bin/console doctrine:database:create
 
-📁 Structure du projet
+## 📁 Structure du projet
 Click-and-Cook/
 ├── assets/                     # Fichiers front-end (CSS, JS)
 │   ├── css/
@@ -90,21 +90,21 @@ Click-and-Cook/
 ├── composer.json               # Dépendances PHP et config Composer
 └── README.md                   # Documentation du projet
 
-🔧 Configuration
+## 🔧 Configuration
 Variables d'environnement (docker compose.yml)
 Relier le php avec:
 docker exec -it nom_du_conteneur_php php bin/console doctrine:migrations:migrate
 
 
 
-🔨 Développement
+## 🔨 Développement
 Pour le développement, les volumes Docker sont configurés pour refléter les changements en temps réel :
 
 volumes:
   - ./public:/var/www/html/public
   - ./src:/var/www/html/src
   - ./templates:/var/www/html/templates
-🚀 Commandes utiles
+## 🚀 Commandes utiles
 # Démarrer l'application
 docker compose up
 
@@ -137,17 +137,17 @@ Connectez-vous avec :
 Email: admin@admin.com
 Mot de passe: admin
 P
-🔨 Services Docker
+## 🔨 Services Docker
 L'application utilise trois services Docker :
 
 PHP/Apache : Serveur web et application PHP
 PostgreSQL : Base de données
 pgAdmin : Interface d'administration de la base de données
-🛡 Sécurité
+## 🛡 Sécurité
 Échappement des données HTML
 Requêtes préparées pour la base de données
 Validation des entrées utilisateur
-🤝 Contribution
+## 🤝 Contribution
 Fork le projet
 Créez votre branche (git checkout -b feature/AmazingFeature)
 Committez vos changements (git commit -m 'Add some AmazingFeature')
