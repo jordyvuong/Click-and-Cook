@@ -15,7 +15,6 @@ gsap.fromTo(
       trigger: ".travelAnim.One",
       start: "top 70%",
       end: "top 25%",
-      markers: true,
       scrub: true,
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
     },
@@ -37,7 +36,6 @@ gsap.fromTo(
       trigger: ".leftAnim",
       start: "top 70%",
       end: "top 25%",
-      markers: true,
       scrub: true,
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
     },
@@ -59,7 +57,6 @@ gsap.fromTo(
       trigger: ".rightAnim",
       start: "top 70%",
       end: "top 25%",
-      markers: true,
       scrub: true,
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
     },
@@ -81,7 +78,6 @@ gsap.fromTo(
       trigger: ".travelAnim.Two",
       start: "top 70%",
       end: "top 25%",
-      markers: true,
       scrub: true,
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
     },
