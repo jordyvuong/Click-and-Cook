@@ -1,6 +1,67 @@
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.fromTo(
+  ".leftCol",
+  {
+    x: -50,
+
+    opacity: 0, // Valeur initiale
+  },
+  {
+    x: 0,
+    duration: 1,
+    opacity: 1, // Valeur finale
+    scrollTrigger: {
+      trigger: ".leftCol",
+      start: "top 22%",
+
+      toggleActions: "play pause play pause", // Modifie les actions selon les événements
+    },
+  }
+);
+
+gsap.fromTo(
+  ".rightCol",
+  {
+    x: 50,
+
+    opacity: 0, // Valeur initiale
+  },
+  {
+    x: 0,
+    duration: 1,
+    opacity: 1, // Valeur finale
+    scrollTrigger: {
+      trigger: ".rightCol",
+      start: "top 22%",
+      toggleActions: "play pause play pause", // Modifie les actions selon les événements
+    },
+  }
+);
+
+gsap.fromTo(
+  ".makeRecipe",
+  {
+    y: 50,
+
+    opacity: 0, // Valeur initiale
+  },
+  {
+    y: 0,
+
+    opacity: 1, // Valeur finale
+    scrollTrigger: {
+      trigger: ".makeRecipe",
+      start: "top 100%",
+      end: "top 25%",
+      scrub: true,
+
+      toggleActions: "restart pause restart pause", // Modifie les actions selon les événements
+    },
+  }
+);
+
+gsap.fromTo(
   ".travelAnim.One",
   {
     y: 50,

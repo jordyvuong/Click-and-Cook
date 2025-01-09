@@ -22,4 +22,11 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+    #[Route('/blog', name: 'app_blog')]
+    public function blog(): Response
+    {
+        return $this->render('blog/index.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
 }
