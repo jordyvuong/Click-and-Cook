@@ -3,14 +3,21 @@ Une application de recette de cuisine construite avec PHP et PostgreSQL.
 
 ## 🚀 Fonctionnalités
 Voir des recettes de cuisine
+
 Consulter les blogs 
+
 Se connecter 
+
 
 ## 🛠 Prérequis
 Docker
+
 Symfony 
+
 Docker Compose
+
 Git
+
 Navigateur web pour pgAdmin
 
 ## 📦 Installation
@@ -97,7 +104,9 @@ Click-and-Cook/
 
 ## 🔧 Configuration
 Variables d'environnement (docker compose.yml)
+
 Relier le php avec:
+
 docker exec -it nom_du_conteneur_php php bin/console doctrine:migrations:migrate
 
 
@@ -106,8 +115,11 @@ docker exec -it nom_du_conteneur_php php bin/console doctrine:migrations:migrate
 Pour le développement, les volumes Docker sont configurés pour refléter les changements en temps réel :
 
 volumes:
+
   - ./public:/var/www/html/public
+    
   - ./src:/var/www/html/src
+    
   - ./templates:/var/www/html/templates
 ## 🚀 Commandes utiles
 # Démarrer l'application
