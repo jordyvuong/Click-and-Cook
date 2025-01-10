@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4">{{ article.title }}</h1>
+
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="text-center">
+                {% if article.image %}
+                    <img src="{{ asset('uploads/articles/' ~ article.image) }}" 
+                         alt="{{ article.title }}" 
+                         class="img-fluid rounded" style="max-width: 80%; height: auto;">
+                {% else %}
+                    <img src="{{ asset('images/default-article.jpg') }}" 
+                         alt="Image par défaut" 
+                         class="img-fluid rounded" style="max-width: 80%; height: auto;">
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="article-meta">
+                <p class="text-muted">Publié le {{ article.publishedAt|date('d M, Y') }}</p>
+                <p class="text-muted">Par {{ article.author.username }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="article-content mb-5">
+        <p>{{ article.content }}</p>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <form action="{{ path('blog_delete', { id: article.id }) }}" method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
+            <input type="hidden" name="_token" value="{{ csrf_token('delete_article_' ~ article.id) }}">
+            <button type="submit" class="btn btn-danger btn-sm">
+                <i class="bi bi-x-circle" style="font-size: 1.5rem;"></i> Supprimer l'article
+            </button>
+        </form>
+    {% endif %}
+
+    <a href="{{ path('blog_list') }}" class="btn btn-primary mt-4">Retour à la liste des articles</a>
+</div>
+{% endblock %}

@@ -13,8 +13,7 @@ gsap.fromTo(
     opacity: 1, // Valeur finale
     scrollTrigger: {
       trigger: ".leftCol",
-      start: "top 22%",
-
+      start: "top 90%",
       toggleActions: "play pause play pause", // Modifie les actions selon les événements
     },
   }
@@ -33,7 +32,7 @@ gsap.fromTo(
     opacity: 1, // Valeur finale
     scrollTrigger: {
       trigger: ".rightCol",
-      start: "top 22%",
+      start: "top 44%",
       toggleActions: "play pause play pause", // Modifie les actions selon les événements
     },
   }
@@ -163,7 +162,6 @@ gsap.fromTo(
       start: "top 120%",
       end: "top 60%",
       scrub: true,
-
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
     },
   }
