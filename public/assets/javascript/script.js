@@ -52,32 +52,11 @@ gsap.fromTo(
     opacity: 1, // Valeur finale
     scrollTrigger: {
       trigger: ".makeRecipe",
-      start: "top 100%",
+      start: "top 110%",
       end: "top 25%",
       scrub: true,
 
       toggleActions: "restart pause restart pause", // Modifie les actions selon les événements
-    },
-  }
-);
-
-gsap.fromTo(
-  ".travelAnim.One",
-  {
-    y: 50,
-
-    opacity: 0, // Valeur initiale
-  },
-  {
-    y: 0,
-
-    opacity: 1, // Valeur finale
-    scrollTrigger: {
-      trigger: ".travelAnim.One",
-      start: "top 70%",
-      end: "top 25%",
-      scrub: true,
-      toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
     },
   }
 );
@@ -117,6 +96,27 @@ gsap.fromTo(
     scrollTrigger: {
       trigger: ".rightAnim",
       start: "top 70%",
+      end: "top 25%",
+      scrub: true,
+      toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
+    },
+  }
+);
+
+gsap.fromTo(
+  ".travelAnim.One",
+  {
+    y: 50,
+
+    opacity: 0, // Valeur initiale
+  },
+  {
+    y: 0,
+
+    opacity: 1, // Valeur finale
+    scrollTrigger: {
+      trigger: ".travelAnim.One",
+      start: "top 85%",
       end: "top 25%",
       scrub: true,
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
