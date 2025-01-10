@@ -159,11 +159,11 @@ html, body {
 }
 
 body {
-    flex: 1;
+  flex: 1;
 }
 
 footer {
-    margin-top: auto;
+  margin-top: auto;
 }
 
 .hero {
@@ -187,68 +187,68 @@ footer {
 }
 
 .image-preview {
-    max-width: 100%; /* Ne dépasse pas la largeur du conteneur */
-    max-height: 300px; /* Limite la hauteur de l'image */
-    object-fit: cover; /* Maintient le rapport d'aspect */
-    border-radius: 8px; /* Ajoute des coins arrondis */
-    margin: 1rem auto; /* Centre l'image */
-    display: block;
+  max-width: 100%; /* Ne dépasse pas la largeur du conteneur */
+  max-height: 300px; /* Limite la hauteur de l'image */
+  object-fit: cover; /* Maintient le rapport d'aspect */
+  border-radius: 8px; /* Ajoute des coins arrondis */
+  margin: 1rem auto; /* Centre l'image */
+  display: block;
 }
 .recipe-meta {
-    display: flex;
-    gap: 2rem;
-    margin: 2rem 0;
-    padding: 1rem 0;
-    border-bottom: 1px solid #eee;
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
 }
 .recipe-meta-item {
-    text-align: center;
+  text-align: center;
 }
 .recipe-meta-label {
-    color: #666;
-    font-size: 0.9rem;
+  color: #666;
+  font-size: 0.9rem;
 }
 .recipe-meta-value {
-    font-weight: bold;
-    margin-top: 0.5rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
 }
 .ingredients-list {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 .ingredients-list li {
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 .ingredients-list input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 .instructions-list {
-    padding-left: 2rem;
+  padding-left: 2rem;
 }
 .instructions-list li {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 .recipe-actions {
-    display: flex;
-    gap: 1rem;
-    margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
 }
 .btn-print {
-    background-color: #dc6b4a;
-    color: white;
-    border: none;
-    padding: 0.5rem 1.5rem;
-    border-radius: 5px;
+  background-color: #dc6b4a;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 5px;
 }
 .category-cuisine {
-    display: flex;
-    gap: 1rem;
-    color: #666;
-    font-size: 0.9rem;
+  display: flex;
+  gap: 1rem;
+  color: #666;
+  font-size: 0.9rem;
 }
 .save-btn {
     background-color: #dc6b4a;

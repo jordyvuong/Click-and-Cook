@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À propos - Click-and-Cook</title>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <link rel="stylesheet" href="{{ asset('assets/styles/styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<header class="bg-white shadow-sm py-3 mb-4 fixed-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light p-0 ">
+                      <a href="{{ path('app_home') }}" class=" h4 navbar-brand mb-0">Click-&-Cook</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link text-dark">Accueil</a></li>
+                    <li class="nav-item"><a href="{{ path('recipe_list') }}" class="nav-link text-dark">Recettes</a></li>
+                    <li class="nav-item"><a href="{{ path('app_blog') }}" class="nav-link text-dark">Blog</a></li>
+                    <li class="nav-item"><a href="{{ path('app_about') }}" class="nav-link text-dark">À propos</a></li>
+                </ul>
+                <div class="d-flex flex-column flex-lg-row gap-2">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="{{ path('recipe_add') }}" class="btn btn-outline-secondary">Ajouter une recette</a>
+                    <a href="{{ path('app_profil')}}" class="btn btn-custom">Profil</a>
+                    {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Se connecter</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-custom">S'inscrire</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main class="container mt-5 pt-5">
+    <section class="text-center py-5 ">
+        <h2 class="display-4 mb-3">À propos de Click-and-Cook</h2>
+        <p class="lead">Click-and-Cook est une plateforme dédiée à la découverte, la création et le partage de recettes. Que vous soyez un chef passionné ou un novice en cuisine, notre mission est de vous inspirer et de vous guider dans la préparation de repas délicieux à chaque étape.</p>
+    </section>
+
+    <section class="text-center py-5 bg-light hero">
+        <div class="container">
+            <h3 class="mb-4">Notre Histoire</h3>
+            <p>Click-and-Cook a été fondé en 2025 dans le but de simplifier la préparation des repas et de rapprocher les gens autour de la cuisine. Grâce à notre plateforme, vous pouvez explorer des recettes créées par des passionnés de cuisine du monde entier et partager vos propres créations avec une communauté dynamique.</p>
+            <p>Nous croyons que cuisiner devrait être un plaisir, et nous nous efforçons de rendre cette expérience aussi accessible et agréable que possible, pour tous les niveaux de compétence en cuisine.</p>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <h3 class="text-center mb-4">Notre équipe</h3>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle mb-3" alt="Jean Dupont">
+                    <h5>Jordy Vuong</h5>
+                    <p>Fondateur et CEO</p>
+                    <p>Jordy est passionné de cuisine et a créé Click-and-Cook pour partager sa passion avec le plus grand nombre. Il est toujours à la recherche de nouvelles idées pour améliorer la plateforme et offrir une meilleure expérience à nos utilisateurs.</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle mb-3" alt="Sophie Martin">
+                    <h5>Quentin Leboucher</h5>
+                    <p>Chef en Chef</p>
+                    <p>Quentin est un expert culinaire qui supervise toutes les recettes présentes sur la plateforme. Il s'assure que chaque recette soit à la fois délicieuse et accessible à tous.</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="https://via.placeholder.com/150" class="img-fluid rounded-circle mb-3" alt="Pierre Durand">
+                    <h5>Anthony Nguyen</h5>
+                    <p>Développeur Principal</p>
+                    <p>Pierre est responsable du développement technique de la plateforme, veillant à ce que Click-and-Cook soit rapide, fiable et facile à utiliser.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-light py-5 hero">
+        <div class="container text-center">
+            <h3>Nos Valeurs</h3>
+            <p class="lead mb-5">Chez Click-and-Cook, nous avons à cœur de promouvoir la cuisine accessible à tous et de soutenir la production locale. Nous croyons en l'innovation constante pour rendre l'expérience culinaire encore plus passionnante et enrichissante.</p>
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Accessibilité</h5>
+                    <p>Nous voulons que tout le monde, quel que soit son niveau, puisse cuisiner facilement et se régaler.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Soutien Local</h5>
+                    <p>Nous collaborons avec des producteurs locaux pour offrir des ingrédients frais et de qualité.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Innovation</h5>
+                    <p>Nous cherchons constamment des moyens d'améliorer notre plateforme et de rendre la cuisine encore plus passionnante.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="text-center py-5">
+        <h3>Contactez-nous</h3>
+        <p>Vous avez des questions ou des suggestions ? N'hésitez pas à nous contacter :</p>
+        <ul class="list-unstyled">
+            <li>Email : <a href="mailto:contact@clickandcook.com">contact@clickandcook.com</a></li>
+            <li>Téléphone : +33 1 23 45 67 89</li>
+            <li>Adresse : 15 Rue de la Cuisine, 75000 Paris, France</li>
+        </ul>
+    </section>
+</main>
+
+<footer class="bg-light py-4 text-center">
+    <div class="container">
+        <p class="mb-0">&copy; 2025 Click-and-Cook. Tous droits réservés.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
