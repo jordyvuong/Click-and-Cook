@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
+use App\Entity\Article; 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,8 +17,12 @@ class HomeController extends AbstractController
         // Récupérer les 3 dernières recettes
         $recipes = $entityManager->getRepository(Recipe::class)->findBy([], ['id' => 'DESC'], 3);
 
+        // Récupérer les 3 derniers articles
+        $articles = $entityManager->getRepository(Article::class)->findBy([], ['publishedAt' => 'DESC'], 3);
+
         return $this->render('home/index.html.twig', [
             'recipes' => $recipes,
+            'articles' => $articles, // Transmettre les articles au template
         ]);
     }
 
@@ -28,11 +33,21 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
     #[Route('/blog', name: 'app_blog')]
-    public function blog(): Response
+    public function blog(EntityManagerInterface $entityManager): Response
     {
+        // Récupérer tous les articles pour la page blog
+        $articles = $entityManager->getRepository(Article::class)->findBy([], ['publishedAt' => 'DESC']);
+
         return $this->render('home/blog.html.twig', [
-            'controller_name' => 'HomeController',
+            'articles' => $articles, 
         ]);
     }
+    
+#[Route('/about', name: 'app_about')]
+public function about(): Response
+{
+    return $this->render('home/about.html.twig');
+}
 }

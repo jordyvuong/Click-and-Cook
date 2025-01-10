@@ -118,7 +118,6 @@ gsap.fromTo(
       start: "top 120%",
       end: "top 25%",
       scrub: true,
-      markers: true,
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
     },
   }

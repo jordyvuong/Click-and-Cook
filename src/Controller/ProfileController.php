@@ -45,11 +45,9 @@ class ProfileController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        // Créer le formulaire
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        // Traiter le formulaire
         if ($form->isSubmitted() && $form->isValid()) {
             // Gérer la photo de profil
             /** @var UploadedFile $picture */
@@ -68,14 +66,12 @@ class ProfileController extends AbstractController
                 }
             }
 
-            // Gérer le mot de passe
             $plainPassword = $form->get('plainPassword')->getData();
             if ($plainPassword) {
                 $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashedPassword);
             }
 
-            // Enregistrer les changements
             $entityManager->flush();
 
             $this->addFlash('success', 'Votre profil a été mis à jour avec succès.');
@@ -83,7 +79,6 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('profile');
         }
 
-        // Afficher le formulaire
         return $this->render('profile/edit.html.twig', [
             'form' => $form->createView(),
         ]);

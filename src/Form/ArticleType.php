@@ -20,7 +20,7 @@ class ArticleType extends AbstractType
             ])
             ->add('image', FileType::class, [
                 'label' => 'Image',
-                'mapped' => false, // Non mappé à la base de données
+                'mapped' => false, 
                 'required' => false,
                 'attr' => ['accept' => 'image/*'],
             ])

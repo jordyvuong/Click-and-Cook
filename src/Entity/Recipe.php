@@ -263,7 +263,6 @@ class Recipe
     public function removeReview(Review $review): static
     {
         if ($this->reviews->removeElement($review)) {
-            // set the owning side to null (unless already changed)
             if ($review->getRecipe() === $this) {
                 $review->setRecipe(null);
             }

@@ -29,17 +29,9 @@
     </div>
 
     <div class="article-content mb-5">
-        <p>{{ article.content }}</p>
+        <p>{{ article.content |raw }}</p>
     </div>
 
-    {% if is_granted('ROLE_ADMIN') %}
-        <form action="{{ path('blog_delete', { id: article.id }) }}" method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete_article_' ~ article.id) }}">
-            <button type="submit" class="btn btn-danger btn-sm">
-                <i class="bi bi-x-circle" style="font-size: 1.5rem;"></i> Supprimer l'article
-            </button>
-        </form>
-    {% endif %}
 
     <a href="{{ path('blog_list') }}" class="btn btn-primary mt-4">Retour à la liste des articles</a>
 </div>

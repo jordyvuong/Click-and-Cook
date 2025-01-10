@@ -67,7 +67,6 @@ class Cuisine
     public function removeCuisine(Recipe $cuisine): static
     {
         if ($this->cuisine->removeElement($cuisine)) {
-            // set the owning side to null (unless already changed)
             if ($cuisine->getCuisine() === $this) {
                 $cuisine->setCuisine(null);
             }

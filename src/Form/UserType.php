@@ -24,13 +24,13 @@ class UserType extends AbstractType
             ])
             ->add('picture', FileType::class, [
                 'label' => 'Photo de profil',
-                'mapped' => false, // Indique que ce champ n'est pas directement lié à l'entité
-                'required' => false, // Le rendre optionnel
+                'mapped' => false, 
+                'required' => false, 
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
-                'mapped' => false, // Indique que ce champ n'est pas directement lié à l'entité
-                'required' => false, // L'utilisateur n'est pas obligé de changer son mot de passe
+                'mapped' => false, 
+                'required' => false, 
             ]);
     }
 

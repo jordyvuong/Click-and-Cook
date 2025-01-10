@@ -22,9 +22,7 @@ class RecipeController extends AbstractController
     {
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $this->addFlash('info', 'Veuillez vous connecter pour ajouter une recette.');
-            return $this->redirectToRoute('app_login', [
-                'redirect_to' => $this->generateUrl('recipe_add'),
-            ]);
+            return $this->redirectToRoute('app_login', ['redirect_to' => 'recipe_add']);
         }
 
         $recipe = new Recipe();
@@ -34,14 +32,12 @@ class RecipeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Gestion de l'image
             $imageFile = $form->get('image')->getData();
             if ($imageFile) {
                 $newFilename = uniqid() . '.' . $imageFile->guessExtension();
                 try {
-                    $imageFile->move(
-                        $this->getParameter('recipes_images_directory'),
-                        $newFilename
-                    );
+                    $imageFile->move($this->getParameter('recipes_images_directory'), $newFilename);
                     $recipe->setImage($newFilename);
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Erreur lors du téléchargement de l\'image.');
@@ -66,14 +62,24 @@ class RecipeController extends AbstractController
         $cuisines = $entityManager->getRepository(Cuisine::class)->findAll();
         $categories = $entityManager->getRepository(Category::class)->findAll();
 
-        $cuisineId = $request->query->get('cuisine');
-        $categoryId = $request->query->get('category');
+        // Gestion des filtres
+        $cuisineFilter = $request->query->get('cuisine');
+        $categoryFilter = $request->query->get('category');
         $criteria = [];
-        if ($cuisineId) {
-            $criteria['cuisine'] = $cuisineId;
+
+        if ($cuisineFilter) {
+            if (is_numeric($cuisineFilter)) {
+                $criteria['cuisine'] = $cuisineFilter;
+            } else {
+                $cuisine = $entityManager->getRepository(Cuisine::class)->findOneBy(['name' => $cuisineFilter]);
+                if ($cuisine) {
+                    $criteria['cuisine'] = $cuisine->getId();
+                }
+            }
         }
-        if ($categoryId) {
-            $criteria['category'] = $categoryId;
+
+        if ($categoryFilter && is_numeric($categoryFilter)) {
+            $criteria['category'] = $categoryFilter;
         }
 
         $recipes = $entityManager->getRepository(Recipe::class)->findBy($criteria);
@@ -85,7 +91,7 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('/recipe/edit/{id}', name: 'recipe_edit', requirements: ['id' => '\\d+'])]
+    #[Route('/recipe/edit/{id}', name: 'recipe_edit', requirements: ['id' => '\d+'])]
     public function editRecipe(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $recipe = $entityManager->getRepository(Recipe::class)->find($id);
@@ -107,10 +113,7 @@ class RecipeController extends AbstractController
             if ($imageFile) {
                 $newFilename = uniqid() . '.' . $imageFile->guessExtension();
                 try {
-                    $imageFile->move(
-                        $this->getParameter('recipes_images_directory'),
-                        $newFilename
-                    );
+                    $imageFile->move($this->getParameter('recipes_images_directory'), $newFilename);
                     $recipe->setImage($newFilename);
                 } catch (FileException $e) {
                     $this->addFlash('error', 'Erreur lors du téléchargement de l\'image.');
@@ -129,7 +132,7 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('/recipe/{id}', name: 'recipe_view', requirements: ['id' => '\\d+'])]
+    #[Route('/recipe/{id}', name: 'recipe_view', requirements: ['id' => '\d+'])]
     public function viewRecipe(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $recipe = $entityManager->getRepository(Recipe::class)->find($id);
@@ -159,7 +162,7 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('/recipe/delete/{id}', name: 'recipe_delete', methods: ['POST'], requirements: ['id' => '\\d+'])]
+    #[Route('/recipe/delete/{id}', name: 'recipe_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function deleteRecipe(int $id, EntityManagerInterface $entityManager): Response
     {
         $recipe = $entityManager->getRepository(Recipe::class)->find($id);
@@ -173,7 +176,6 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('recipe_list');
         }
 
-        // Supprimer les avis associés à la recette
         foreach ($recipe->getReviews() as $review) {
             $entityManager->remove($review);
         }
@@ -185,7 +187,7 @@ class RecipeController extends AbstractController
         return $this->redirectToRoute('recipe_list');
     }
 
-    #[Route('/review/delete/{id}', name: 'review_delete', methods: ['POST'], requirements: ['id' => '\\d+'])]
+    #[Route('/review/delete/{id}', name: 'review_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function deleteReview(int $id, Request $request, EntityManagerInterface $entityManager): Response
     {
         $review = $entityManager->getRepository(Review::class)->find($id);

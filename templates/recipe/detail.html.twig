@@ -6,17 +6,14 @@
 
 <div class="container mt-5 p-5">
 
-    <!-- Recipe Title -->
     <h1 class="mb-3">{{ recipe.title }}</h1>
 
-    <!-- Category and Cuisine -->
     <div class="category-cuisine mb-4">
         <span>Categorie: {{ recipe.category.name }}</span>
         <span>•</span>
         <span>Cuisine: {{ recipe.cuisine.name }}</span>
     </div>
 
-<!-- Recipe Image -->
 <div class="mb-4 text-center">
     {% if recipe.image %}
         <img src="{{ asset('uploads/recipes/' ~ recipe.image) }}" alt="{{ recipe.title }}" class="img-fluid rounded w-50 mx-auto d-block">
@@ -25,8 +22,6 @@
     {% endif %}
 </div>
 
-
-    <!-- Recipe Meta Info -->
     <div class="recipe-meta">
         <div class="recipe-meta-item">
             <div class="recipe-meta-label">Temps de préparation</div>
@@ -42,10 +37,8 @@
         </div>
     </div>
 
-    <!-- Recipe Description -->
     <p class="mb-4">{{ recipe.description }}</p>
 
-    <!-- Recipe Actions -->
     <div class="recipe-actions">
         <div x-data>
     <button class="btn btn-primary btn-print" @click="window.print()">Imprimer la recette</button>
@@ -61,7 +54,6 @@
     </div>
     </div>
 
-<!-- Ingredients Section -->
 <div class="container mt-5">
     <h3 class="mb-4">Ingrédients</h3>
     <div class="card shadow-sm">
@@ -82,7 +74,6 @@
     </div>
 </div>
 
-<!-- Instructions Section -->
 <div class="container mt-5">
     <h3 class="mb-4">Instructions</h3>
     <div class="card shadow-sm">
@@ -99,7 +90,6 @@
 </div>
 
 <div class="container mt-5 comment-section">
-    <!-- Section des avis -->
     <h3 class="mt-4">Avis :</h3>
     <div class="card shadow-sm mb-4">
         <div class="card-body">
@@ -133,7 +123,6 @@
         </div>
     </div>
 
-    <!-- Formulaire pour laisser un avis -->
     <h3 class="mb-4">Laisser un avis :</h3>
     <div class="card shadow-sm">
         <div class="card-body">
@@ -148,7 +137,6 @@
                     {{ form_widget(reviewForm.rating, {'attr': {'class': 'form-control', 'type': 'number', 'min': 1, 'max': 5}}) }}
                     {{ form_errors(reviewForm.rating) }}
                 </div>
-                <!-- Ajout du champ CSRF token -->
                 {{ form_row(reviewForm._token) }}
                 <div class="d-grid">
                     <button class="btn btn-custom btn-lg" type="submit">Envoyer l'avis</button>

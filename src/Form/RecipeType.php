@@ -28,7 +28,7 @@ class RecipeType extends AbstractType
             ->add('image', FileType::class, [
                 'label' => 'Recipe Image',
                 'required' => false,
-                'mapped' => false, // L'image n'est pas directement mappée à l'entité
+                'mapped' => false, 
                 'attr' => ['class' => 'form-control'],
             ])
             ->add('description', TextType::class, [

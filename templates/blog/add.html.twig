@@ -7,14 +7,12 @@
     <h1 class="mb-4">Ajouter un article</h1>
     {{ form_start(form, { 'attr': { 'enctype': 'multipart/form-data' } }) }}
     
-        <!-- Champ pour le titre -->
         <div class="mb-3">
             {{ form_label(form.title, 'Titre de l\'article', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Entrez le titre de l\'article'} }) }}
             {{ form_errors(form.title) }}
         </div>
         
-        <!-- Champ pour l'image -->
         <div class="mb-4">
             {{ form_label(form.image, 'Image de l\'article', {'label_attr': {'class': 'form-label'}}) }}
             <div class="image-upload-container">
@@ -35,14 +33,12 @@
             {{ form_errors(form.image) }}
         </div>
         
-        <!-- Champ pour le contenu -->
         <div class="mb-3">
             {{ form_label(form.content, 'Contenu de l\'article', {'label_attr': {'class': 'form-label'}}) }}
             {{ form_widget(form.content, { 'attr': {'class': 'form-control', 'rows': 5, 'placeholder': 'Écrivez le contenu ici'} }) }}
             {{ form_errors(form.content) }}
         </div>
 
-        <!-- Bouton d'envoi -->
         <button type="submit" class="btn btn-custom">Publier l'article</button>
     {{ form_end(form) }}
 </div>
