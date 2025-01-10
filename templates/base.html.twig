@@ -7,27 +7,24 @@
         <link rel="icon" href="{{ asset('assets/img/logo.png') }}">
 
         <!-- Styles CSS -->
-
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
         <link rel="stylesheet" href="{{ asset('assets/styles/styles.css') }}">
-        {% block stylesheets %}
-        {% endblock %}
+        {% block stylesheets %}{% endblock %}
     </head>
     <body>
         <!-- Navbar -->
         <header class="bg-white shadow-sm py-3 mb-4 fixed-top">
             <div class="container">
-                <nav class="navbar navbar-expand-lg navbar-light p-0 ">
+                <nav class="navbar navbar-expand-lg navbar-light p-0">
                     <h1 class="h4 navbar-brand mb-0">Click&Cook</h1>
                     
-                    {% else %}
-                    <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Se connecter</a>
-                    <a href="{{ path('app_register') }}" class="btn btn-custom">S'inscrire</a>
-                    {% endif %}
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
                     <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link text-dark">Accueil</a></li>
                             <li class="nav-item"><a href="{{ path('recipe_list') }}" class="nav-link text-dark">Recettes</a></li>
                             <li class="nav-item"><a href="{{ path('blog_list') }}" class="nav-link text-dark">Blog</a></li>
@@ -35,19 +32,18 @@
                         </ul>
                         <div class="d-flex flex-column flex-lg-row gap-2">
                             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <a href="{{ path('recipe_add') }}" class="btn btn-outline-secondary">Ajouter une recette</a>
-                            <a href="{{ path('app_profil')}}" class="btn btn-custom">Profil</a>
+                                <a href="{{ path('recipe_add') }}" class="btn btn-outline-secondary">Ajouter une recette</a>
+                                <a href="{{ path('app_profil') }}" class="btn btn-custom">Profil</a>
                             {% else %}
-                            <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Se connecter</a>
-                            <a href="{{ path('app_register') }}" class="btn btn-custom">S'inscrire</a>
+                                <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Se connecter</a>
+                                <a href="{{ path('app_register') }}" class="btn btn-custom">S'inscrire</a>
                             {% endif %}
                         </div>
                     </div>
                 </nav>
             </div>
-        </nav>
-    </div>
-</header>
+        </header>
+
         <!-- Main Content -->
         <main class="mt-5">
             {% block body %}
@@ -55,21 +51,19 @@
         </main>
 
         <!-- Footer -->
-            <footer class="bg-light py-4 mt-3 text-center">
-        <div class="container">
-            <p class="mb-0">&copy; 2025 Click-and-Cook. Tout droits réservés.</p>
-        </div>
-    </footer>
+        <footer class="bg-light py-4 mt-3 text-center">
+            <div class="container">
+                <p class="mb-0">&copy; 2025 Click-and-Cook. Tous droits réservés.</p>
+            </div>
+        </footer>
 
         <!-- Scripts JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="{{ asset('assets/javascript/script.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+        <script src="{{ asset('assets/javascript/script.js') }}"></script>
 
-
-        {% block javascripts %}
-        {% endblock %}
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
