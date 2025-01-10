@@ -26,7 +26,11 @@ class ArticleType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Contenu',
-                'attr' => ['placeholder' => 'Écrivez le contenu ici', 'rows' => 5],
+                'attr' => [
+                    'placeholder' => 'Écrivez le contenu ici',
+                    'rows' => 10,
+                    'class' => 'tinymce', // Classe spécifique pour TinyMCE
+                ],
             ]);
     }
 
