@@ -1,12 +1,19 @@
 ## Application Click and Cook
-Une application de recette de cuisine construite avec PHP et PostgreSQL.
+Une application de recette de cuisine construite avec PHP(symfony) et PostgreSQL, Bootstrap, Alpine.js.
 
 ## 🚀 Fonctionnalités
 Voir des recettes de cuisine
 
-Consulter les blogs 
+Crud complet:
+
+Ajouter, modifier et supprimer des recettes
+
+Mettre des avis et commentaires
+
+Consulter, ajouter, modifier et supprimerles blogs 
 
 Se connecter 
+
 
 
 ## 🛠 Prérequis
@@ -23,8 +30,8 @@ Navigateur web pour pgAdmin
 ## 📦 Installation
 Clonez le repository :
 ```
-git clone [url-du-repo]
-cd [nom-du-dossier]
+git clone https://github.com/jordyvuong/Click-and-Cook.git
+cd Click-and-Cook
 ```
 Lancez l'application avec Docker Compose :
 
@@ -60,45 +67,88 @@ php bin/console doctrine:database:create
 # Structure du projet
 
 ```
-Click-and-Cook/
-├── assets/                  # Fichiers front-end (CSS, JS)
-│   ├── css/                 # Fichiers CSS
-│   ├── js/                  # Fichiers JavaScript
-│   └── images/              # Fichiers d'images
-├── bin/                     # Scripts Symfony (console, etc.)
-├── config/                  # Configuration du projet (routes, services, etc.)
-│   ├── packages/            # Configurations des packages (doctrine.yaml, mailer.yaml)
-│   ├── routes/              # Configuration des routes
-│   │   ├── annotations.yaml # Routes définies avec annotations
-│   │   └── security.yaml    # Routes spécifiques à la sécurité
-│   └── services.yaml        # Définition des services
-├── migrations/              # Fichiers de migration Doctrine
-├── public/                  # Fichiers accessibles publiquement
-│   ├── index.php            # Point d'entrée principal
-│   ├── uploads/             # Dossier pour les fichiers uploadés
-│   └── assets/              # Fichiers compilés de Webpack Encore
-├── src/                     # Code source principal
-│   ├── Controller/          # Contrôleurs pour gérer les routes
-│   │   ├── HomeController.php
-│   │   └── UserController.php
-│   ├── Entity/              # Entités Doctrine (modèles de données)
-│   │   └── User.php
-│   ├── Form/                # Classes de formulaires
-│   │   └── RegistrationFormType.php
-│   ├── Repository/          # Requêtes personnalisées Doctrine
-│   └── Security/            # Classes liées à la sécurité (authentification, etc.)
-├── templates/               # Templates Twig
-│   ├── base.html.twig       # Template de base
-│   ├── home/                # Pages pour l'accueil
-│   │   └── index.html.twig
-│   └── security/            # Pages liées à la sécurité (connexion, inscription)
-├── tests/                   # Tests unitaires et fonctionnels
-├── translations/            # Fichiers de traduction
-├── var/                     # Fichiers temporaires (cache, logs)
-├── vendor/                  # Dépendances installées via Composer
-├── .env                     # Variables d'environnement
-├── composer.json            # Dépendances PHP
-└── README.md                # Documentation du projet
+CLICK-AND-COOK/
+
+├── assets/
+├── bin/
+├── config/
+├── init.sql
+├── migrations/
+├── public/
+│ ├── assets/
+│ │ ├── img/
+│ │ ├── javascript/
+│ │ └── styles/
+│ ├── uploads/
+│ │ ├── articles/
+│ │ ├── profile_pictures/
+│ │ └── recipes/
+│ └── index.php
+├── src/
+│ ├── Controller/
+│ │ ├── ArticleController.php
+│ │ ├── HomeController.php
+│ │ ├── ProfileController.php
+│ │ ├── RecipeController.php
+│ │ ├── RegistrationController.php
+│ │ └── SecurityController.php
+│ ├── Entity/
+│ │ ├── Article.php
+│ │ ├── Category.php
+│ │ ├── Cuisine.php
+│ │ ├── Ingredient.php
+│ │ ├── Instruction.php
+│ │ ├── Recipe.php
+│ │ ├── Review.php
+│ │ └── User.php
+│ ├── Form/
+│ │ ├── ArticleType.php
+│ │ ├── IngredientType.php
+│ │ ├── InstructionType.php
+│ │ ├── RecipeType.php
+│ │ ├── RegistrationFormType.php
+│ │ └── ReviewType.php
+│ ├── Repository/
+│ │ ├── ArticleRepository.php
+│ │ ├── CategoryRepository.php
+│ │ ├── CuisineRepository.php
+│ │ ├── IngredientRepository.php
+│ │ ├── InstructionRepository.php
+│ │ ├── RecipeRepository.php
+│ │ ├── ReviewRepository.php
+│ │ └── UserRepository.php
+│ ├── Security/
+│ │ └── UsersAuthenticator.php
+│ └── Kernel.php
+├── templates/
+│ ├── blog/
+│ │ ├── add.html.twig
+│ │ ├── blog.html.twig
+│ │ └── detail.html.twig
+│ ├── home/
+│ │ ├── about.html.twig
+│ │ ├── index.html.twig
+│ │ └── profil.html.twig
+│ ├── profile/
+│ │ └── edit.html.twig
+│ ├── recipe/
+│ │ ├── add.html.twig
+│ │ ├── detail.html.twig
+│ │ ├── edit.html.twig
+│ │ └── list.html.twig
+│ ├── registration/
+│ │ └── register.html.twig
+│ ├── security/
+│ │ └── login.html.twig
+│ ├── base.html.twig
+│ └── tests/
+├── .env
+├── .env.dev
+├── .env.test
+├── .gitignore
+├── compose.override.yaml
+├── docker-compose.yml
+└── README.md
 ```
 
 

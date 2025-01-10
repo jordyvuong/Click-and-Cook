@@ -158,7 +158,7 @@ gsap.fromTo(
     opacity: 1, // Valeur finale
     scrollTrigger: {
       trigger: ".faqLeft",
-      start: "top 100%",
+      start: "top 120%",
       end: "top 60%",
       scrub: true,
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
@@ -179,7 +179,7 @@ gsap.fromTo(
     opacity: 1, // Valeur finale
     scrollTrigger: {
       trigger: ".faqRight",
-      start: "top 100%",
+      start: "top 120%",
       end: "top 70%",
       scrub: true,
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
