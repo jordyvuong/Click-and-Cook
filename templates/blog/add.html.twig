@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter un article{% endblock %}
+
+{% block body %}
+<header class="bg-white shadow-sm py-3 mb-4 fixed-top">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light p-0 ">
+            <h1 class="h4 navbar-brand mb-0">Click-and-Cook</h1>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link text-dark">Accueil</a></li>
+                    <li class="nav-item"><a href="{{ path('recipe_list')}}" class="nav-link text-dark">Recettes</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link text-dark">Blog</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link text-dark">A propos</a></li>
+                </ul>
+                <div class="d-flex flex-column flex-lg-row gap-2">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a href="#" class="btn btn-outline-secondary">Ajouter une recette</a>
+                    <a href="{{ path('app_profil')}}" class="btn btn-custom">Profil</a>
+                    
+                    {% else %}
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Se connecter</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-custom">S'inscrire</a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+<div class="container mt-5 py-5">
+    <h1 class="mb-4">Ajouter un article</h1>
+    {{ form_start(form, { 'attr': { 'enctype': 'multipart/form-data' } }) }}
+    
+        <!-- Champ pour le titre -->
+        <div class="mb-3">
+            {{ form_label(form.title, 'Titre de l\'article', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.title, { 'attr': {'class': 'form-control', 'placeholder': 'Entrez le titre de l\'article'} }) }}
+            {{ form_errors(form.title) }}
+        </div>
+        
+        <!-- Champ pour l'image -->
+        <div class="mb-4">
+            {{ form_label(form.image, 'Image de l\'article', {'label_attr': {'class': 'form-label'}}) }}
+            <div class="image-upload-container">
+                <div id="image-preview-container" style="display: none; max-width: 400px; margin: 0 auto; text-align: center;">
+                    <img id="image-preview" class="image-preview" style="max-width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin: 1rem auto; display: block;">
+                </div>
+                {{ form_widget(form.image, { 
+                    'attr': {
+                        'class': 'form-control d-none',
+                        'accept': 'image/*',
+                        'onchange': 'handleImagePreview(this)'
+                    }
+                }) }}
+                <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('{{ form.image.vars.id }}').click()">
+                    Ajouter une photo
+                </button>
+            </div>
+            {{ form_errors(form.image) }}
+        </div>
+        
+        <!-- Champ pour le contenu -->
+        <div class="mb-3">
+            {{ form_label(form.content, 'Contenu de l\'article', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.content, { 'attr': {'class': 'form-control', 'rows': 5, 'placeholder': 'Écrivez le contenu ici'} }) }}
+            {{ form_errors(form.content) }}
+        </div>
+
+        <!-- Bouton d'envoi -->
+        <button type="submit" class="btn btn-custom">Publier l'article</button>
+    {{ form_end(form) }}
+</div>
+
+<script>
+function handleImagePreview(input) {
+    const previewContainer = document.getElementById('image-preview-container');
+    const preview = document.getElementById('image-preview');
+    
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            previewContainer.style.display = 'block';
+        }
+        
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+{% endblock %}

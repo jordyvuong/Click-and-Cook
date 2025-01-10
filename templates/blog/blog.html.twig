@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Blog{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-5">Blog</h1>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('blog_add') }}" class="btn btn-primary mb-4">Ajouter un article</a>
+    {% endif %}
+
+    {% if articles|length > 0 %}
+  {# Article en vedette #}
+{% set featuredArticle = articles|first %}
+<div class="featured-article mb-5">
+    <div class="card shadow-sm border-0">
+        <div class="row g-0">
+            <div class="col-lg-6 p-4 d-flex flex-column justify-content-between">
+                <div>
+                    <small class="text-muted">Publié le {{ featuredArticle.publishedAt|date('d M, Y') }}</small>
+                    <h2 class="mt-2 mb-3">{{ featuredArticle.title }}</h2>
+                    <p class="text-muted">{{ featuredArticle.content|slice(0, 200) ~ '...' }}</p>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="{{ path('blog_detail', { id: featuredArticle.id }) }}" class="btn btn-custom mt-3" style="width: auto;">Lire la suite →</a>
+                    
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <form action="{{ path('blog_delete', { id: featuredArticle.id }) }}" method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_article_' ~ featuredArticle.id) }}">
+                        <button type="submit" class="btn btn-sm p-0" style="background: none; border: none;">
+                            <i class="bi bi-x-circle" style="color: red; font-size: 1.5rem;"></i>
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                {% if featuredArticle.image %}
+                    <img src="{{ asset('uploads/articles/' ~ featuredArticle.image) }}" 
+                         alt="{{ featuredArticle.title }}" 
+                         class="featured-image">
+                {% else %}
+                    <img src="{{ asset('images/default-article.jpg') }}" 
+                         alt="Image par défaut" 
+                         class="featured-image">
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    {# Grille d'articles #}
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for article in articles|slice(1) %}
+            <div class="col">
+                <div class="card h-100 shadow">
+                    <img src="{{ asset('uploads/articles/' ~ article.image) }}" 
+                         class="card-img-top" 
+                         alt="{{ article.title }}" 
+                         style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <small class="text-muted">Publié le {{ article.publishedAt|date('d M, Y') }}</small>
+                        <h5 class="card-title mt-3">{{ article.title }}</h5>
+                        <p class="card-text text-muted">{{ article.content|slice(0, 100) ~ '...' }}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a href="{{ path('blog_detail', { id: article.id }) }}" class="btn btn-sm btn-outline-primary">Lire la suite →</a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <form action="{{ path('blog_delete', { id: article.id }) }}" method="post" class="d-inline"
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article ?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete_article_' ~ article.id) }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-x-circle"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+        <p class="text-muted">Aucun article disponible pour le moment.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+
