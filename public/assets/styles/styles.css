@@ -1,9 +1,161 @@
-html,
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 body {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+}
+
+.hero {
+  background: linear-gradient(to right, #f9f4ef, #ffe6e6);
+  padding: 5rem 0;
+}
+.hero img {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+.btn.btn-custom {
+  background-color: #d3755e;
+  color: #fff;
+}
+.btn-custom:hover {
+  background-color: #bf5a43;
+}
+.card-img-top {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.image-preview {
+    max-width: 100%; /* Ne dépasse pas la largeur du conteneur */
+    max-height: 300px; /* Limite la hauteur de l'image */
+    object-fit: cover; /* Maintient le rapport d'aspect */
+    border-radius: 8px; /* Ajoute des coins arrondis */
+    margin: 1rem auto; /* Centre l'image */
+    display: block;
+}
+.recipe-meta {
+    display: flex;
+    gap: 2rem;
+    margin: 2rem 0;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+.recipe-meta-item {
+    text-align: center;
+}
+.recipe-meta-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+.recipe-meta-value {
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+.ingredients-list {
+    list-style: none;
+    padding: 0;
+}
+.ingredients-list li {
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.ingredients-list input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+.instructions-list {
+    padding-left: 2rem;
+}
+.instructions-list li {
+    margin-bottom: 1.5rem;
+}
+.recipe-actions {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+.btn-print {
+    background-color: #dc6b4a;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+}
+.category-cuisine {
+    display: flex;
+    gap: 1rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+.save-btn {
+    background-color: #dc6b4a;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
+}
+
+@media print {
+/* Centrer et ajuster l'image */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+    /* Masquer les sections inutiles */
+header, footer, .btn-print, .recipe-actions, .navbar, .recipe-meta, .card.shadow-sm.mb-4 {
+    display: none !important;
+    }
+
+    /* Masquer uniquement la section des avis et le formulaire d'avis */
+.comment-section {
+    display: none !important;
+    }
+
+.container .card.shadow-sm.mb-4 + .card.shadow-sm {
+    display: none !important;
+    }
+
+    /* Conserver les ingrédients et instructions */
+.container {
+    width: 100%;
+    text-align: center;
+}
+
+.card {
+    border: none;
+    box-shadow: none;
+}
+
+    /* Adapter la taille du contenu pour l'impression */
+body {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+    /* Supprimer les marges inutiles */
+.mt-5, .mb-4 {
+        margin: 0 !important;
+}
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 body {
@@ -99,21 +251,115 @@ footer {
   font-size: 0.9rem;
 }
 .save-btn {
-  background-color: #dc6b4a;
-  color: white;
-  border: none;
-  padding: 0.5rem 1.5rem;
-  border-radius: 5px;
+    background-color: #dc6b4a;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 5px;
 }
 
-.container-fluid {
-  width: 100%;
+@media print {
+/* Centrer et ajuster l'image */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }
 
-.btn-link {
-  font-size: 1.2rem;
+    /* Masquer les sections inutiles */
+header, footer, .btn-print, .recipe-actions, .navbar, .recipe-meta, .card.shadow-sm.mb-4 {
+    display: none !important;
+    }
+
+    /* Masquer uniquement la section des avis et le formulaire d'avis */
+.comment-section {
+    display: none !important;
+    }
+
+.container .card.shadow-sm.mb-4 + .card.shadow-sm {
+    display: none !important;
+    }
+
+    /* Conserver les ingrédients et instructions */
+.container {
+    width: 100%;
+    text-align: center;
 }
 
-.card-body {
-  padding: 1.5rem;
+.card {
+    border: none;
+    box-shadow: none;
 }
+
+    /* Adapter la taille du contenu pour l'impression */
+body {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+    /* Supprimer les marges inutiles */
+.mt-5, .mb-4 {
+        margin: 0 !important;
+}
+}
+
+    /* Styles généraux */
+    .container {
+        max-width: 1200px;
+    }
+
+    /* Article en vedette */
+    .featured-article .card {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .featured-article img {
+        height: 300px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 0 12px 12px 0;
+    }
+
+    .featured-article h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+
+    /* Grille d'articles */
+    .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .btn {
+        border-radius: 5px;
+    }
+
+    .btn-outline-danger {
+        border: 1px solid #dc3545;
+        color: #dc3545;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: #fff;
+    }

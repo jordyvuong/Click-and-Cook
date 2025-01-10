@@ -173,10 +173,36 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('recipe_list');
         }
 
+        // Supprimer les avis associés à la recette
+        foreach ($recipe->getReviews() as $review) {
+            $entityManager->remove($review);
+        }
+
         $entityManager->remove($recipe);
         $entityManager->flush();
 
         $this->addFlash('success', 'Recette supprimée avec succès !');
         return $this->redirectToRoute('recipe_list');
+    }
+
+    #[Route('/review/delete/{id}', name: 'review_delete', methods: ['POST'], requirements: ['id' => '\\d+'])]
+    public function deleteReview(int $id, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $review = $entityManager->getRepository(Review::class)->find($id);
+
+        if (!$review) {
+            throw $this->createNotFoundException('Avis non trouvé.');
+        }
+
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Vous n\'êtes pas autorisé à supprimer cet avis.');
+            return $this->redirectToRoute('recipe_view', ['id' => $review->getRecipe()->getId()]);
+        }
+
+        $entityManager->remove($review);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Avis supprimé avec succès !');
+        return $this->redirectToRoute('recipe_view', ['id' => $review->getRecipe()->getId()]);
     }
 }

@@ -1,37 +1,8 @@
 {% extends 'base.html.twig' %}
 
-
-
 {% block title %}{{ recipe.title }}{% endblock %}
 
 {% block body %}
-<header class="bg-white shadow-sm py-3 mb-4 fixed-top">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light p-0">
-            <h1 class="h4 navbar-brand mb-0">Click-and-Cook</h1>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a href="{{ path('app_home') }}" class="nav-link text-dark">Accueil</a></li>
-                    <li class="nav-item"><a href="{{ path('recipe_list') }}" class="nav-link text-dark">Recettes</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark">Blog</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link text-dark">À propos</a></li>
-                </ul>
-                <div class="d-flex flex-column flex-lg-row gap-2">
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a href="{{ path('recipe_add') }}" class="btn btn-outline-secondary">Ajouter une recette</a>
-                    <a href="{{ path('app_profil') }}" class="btn btn-custom">Profil</a>
-                    {% else %}
-                    <a href="{{ path('app_login') }}" class="btn btn-outline-secondary">Se connecter</a>
-                    <a href="{{ path('app_register') }}" class="btn btn-custom">S'inscrire</a>
-                    {% endif %}
-                </div>
-            </div>
-        </nav>
-    </div>
-</header>
 
 <div class="container mt-5 p-5">
 
@@ -76,7 +47,9 @@
 
     <!-- Recipe Actions -->
     <div class="recipe-actions">
-        <button class="btn-print">Imprimer la recette</button>
+        <div x-data>
+    <button class="btn btn-primary btn-print" @click="window.print()">Imprimer la recette</button>
+        </div>
         {% if is_granted('IS_AUTHENTICATED_FULLY') and app.user == recipe.user %}
         <a href="{{ path('recipe_edit', { id: recipe.id }) }}" class="btn btn-outline-primary">Modifier la recette</a>
         <form action="{{ path('recipe_delete', { id: recipe.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')">
@@ -125,7 +98,7 @@
     </div>
 </div>
 
-<div class="container mt-5">
+<div class="container mt-5 comment-section">
     <!-- Section des avis -->
     <h3 class="mt-4">Avis :</h3>
     <div class="card shadow-sm mb-4">
@@ -134,11 +107,23 @@
                 <ul class="list-group">
                     {% for review in recipe.reviews %}
                         <li class="list-group-item">
-                            <div class="d-flex justify-content-between">
-                                <span><strong>{{ review.user.username }}</strong></span>
-                                <span class="badge bg-primary">{{ review.rating }}/5</span>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ review.user.username }}</strong>
+                                    <p class="mt-2 mb-0 text-muted">{{ review.comment }}</p>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-primary">{{ review.rating }}/5</span>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <form action="{{ path('review_delete', { id: review.id }) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet avis ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete_review_' ~ review.id) }}">
+                                            <button type="submit" class="btn btn-danger btn-sm p-0" style="background: none; border: none;">
+                                                <i class="bi bi-x-circle" style="color: red; font-size: 1.2rem;"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <p class="mt-2 mb-0 text-muted">{{ review.comment }}</p>
                         </li>
                     {% endfor %}
                 </ul>
@@ -172,6 +157,7 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}
 
