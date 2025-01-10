@@ -140,6 +140,50 @@ gsap.fromTo(
       start: "top 70%",
       end: "top 25%",
       scrub: true,
+
+      toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
+    },
+  }
+);
+
+gsap.fromTo(
+  ".faqLeft",
+  {
+    x: -50,
+
+    opacity: 0, // Valeur initiale
+  },
+  {
+    x: 0,
+
+    opacity: 1, // Valeur finale
+    scrollTrigger: {
+      trigger: ".faqLeft",
+      start: "top 70%",
+      end: "top 25%",
+      scrub: true,
+      markers: true,
+      toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
+    },
+  }
+);
+
+gsap.fromTo(
+  ".faqRight",
+  {
+    x: 50,
+
+    opacity: 0, // Valeur initiale
+  },
+  {
+    x: 0,
+
+    opacity: 1, // Valeur finale
+    scrollTrigger: {
+      trigger: ".faqRight",
+      start: "top 70%",
+      end: "top 25%",
+      scrub: true,
       toggleActions: "restart pause reverse pause", // Modifie les actions selon les événements
     },
   }
