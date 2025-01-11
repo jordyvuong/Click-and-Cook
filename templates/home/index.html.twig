@@ -45,7 +45,7 @@
                             <h5 class="card-title">{{ recipe.title }}</h5>
                             <p class="card-text">{{ recipe.description|slice(0, 100) ~ '...' }}</p>
                         </div>
-                        <div class="card-footer d-flex justify-content-between align-items-center">
+                        <div class="card-footer d-flex justify-content-center align-items-center">
                             <a href="{{ path('recipe_view', {'id': recipe.id}) }}" class="btn btn-outline-danger">❤</a>
                         </div>
                     </div>
