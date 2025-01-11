@@ -39,12 +39,6 @@ Lancez l'application avec Docker Compose :
 docker compose up --build
 ```
 
-Installer Composer 
-
-```
-Composer Install
-```
-
 ## 🌐 Utilisation
 Accédez à l'application via votre navigateur : http://localhost:8080
 
