@@ -11,19 +11,26 @@ services:
       - ./templates:/var/www/html/templates
       - ./migrations:/var/www/html/migrations
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     environment:
-      DATABASE_URL: "postgresql://jordy:bdd77@database:5432/click_and_cook"
+      DATABASE_URL: "postgresql://quentin:bdd77@database:5432/click_and_cook"
 
   database:
     image: postgres:16
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./dump.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       POSTGRES_DB: click_and_cook
-      POSTGRES_USER: jordy
+      POSTGRES_USER: quentin
       POSTGRES_PASSWORD: bdd77
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quentin -d click_and_cook"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   pgadmin:
     image: dpage/pgadmin4
